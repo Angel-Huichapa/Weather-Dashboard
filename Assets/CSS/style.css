@@ -9,10 +9,14 @@ body {
     background-color: #f0f0f0;
 }
 
-header, nav, section, footer {
+.container {
     width: 80%;
     margin: 0 auto;
     padding: 20px 0;
+}
+
+header, nav, section, footer {
+    margin-bottom: 20px;
 }
 
 header h1 {
@@ -37,7 +41,6 @@ nav ul li a {
 section {
     background-color: #fff;
     padding: 20px;
-    margin-bottom: 20px;
 }
 
 footer {
@@ -45,4 +48,19 @@ footer {
     background-color: #333;
     color: #fff;
     padding: 10px 0;
+}
+
+.forecast-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 columns */
+    gap: 10px; /* Gap between cards */
+}
+
+.forecast-card {
+    background-color: #f9f9f9;
+    padding: 10px;
+}
+
+.forecast-card p {
+    margin-bottom: 5px;
 }
