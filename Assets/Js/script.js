@@ -50,19 +50,21 @@ function displayRecentSearches() {
 // Function to handle the search button click
 function handleSearch() {
     const cityInput = document.getElementById('city-input').value;
-    const geocodingApiUrl = `https://api.example.com/geocoding?q=${cityInput}&apiKey=YOUR_GEOCODING_API_KEY`;
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityInput}&appid=32466c64e9251fccf6dfd8df0d92a6af`;
 
-    // Fetch latitude and longitude for the city
-    fetch(geocodingApiUrl)
+    // Fetch weather data from the API
+    fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
-            const latitude = data.latitude;
-            const longitude = data.longitude;
+            // Extract latitude and longitude from the API response
+            const latitude = data.coord.lat;
+            const longitude = data.coord.lon;
+            
             // Display weather based on latitude and longitude
             displayWeather(latitude, longitude);
         })
         .catch(error => {
-            console.error('Error fetching city coordinates:', error);
+            console.error('Error fetching weather data:', error);
         });
 }
 
