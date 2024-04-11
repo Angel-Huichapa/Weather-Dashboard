@@ -1,6 +1,5 @@
-// Define the function to fetch and display weather data
+// Function to fetch and display weather data
 function displayWeather(latitude, longitude) {
-    // Construct the API URL with provided latitude, longitude, and API key
     const apiKey = '714ce02d37192582c0ce631735181589';
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
 
@@ -8,23 +7,49 @@ function displayWeather(latitude, longitude) {
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
+            // Store weather data locally
+            localStorage.setItem('weatherData', JSON.stringify(data));
+
             // Update the weather-info element with the fetched data
             const weatherInfoElement = document.getElementById('weather-info');
             weatherInfoElement.innerHTML = `
                 <p>Temperature: ${data.main.temp}°C</p>
                 <p>Condition: ${data.weather[0].description}</p>
             `;
+            
+            // Add the search query to recent searches
+            addRecentSearch(data.name);
         })
         .catch(error => {
             console.error('Error fetching weather data:', error);
         });
 }
 
+// Function to add a search query to recent searches
+function addRecentSearch(query) {
+    let recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+    // Add the query to the beginning of the array
+    recentSearches.unshift(query);
+    // Keep only the latest 5 searches
+    recentSearches = recentSearches.slice(0, 5);
+    localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+    // Display recent searches
+    displayRecentSearches();
+}
+
+// Function to display recent searches
+function displayRecentSearches() {
+    const recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+    const recentSearchesElement = document.getElementById('recent-searches');
+    recentSearchesElement.innerHTML = '<h3>Recent Searches</h3>';
+    recentSearches.forEach(query => {
+        recentSearchesElement.innerHTML += `<p>${query}</p>`;
+    });
+}
+
 // Function to handle the search button click
 function handleSearch() {
     const cityInput = document.getElementById('city-input').value;
-    // Assuming you have a geocoding API to get latitude and longitude for the city
-    // You need to replace 'YOUR_GEOCODING_API_KEY' and construct the URL accordingly
     const geocodingApiUrl = `https://api.example.com/geocoding?q=${cityInput}&apiKey=YOUR_GEOCODING_API_KEY`;
 
     // Fetch latitude and longitude for the city
@@ -43,3 +68,8 @@ function handleSearch() {
 
 // Add event listener to the search button
 document.getElementById('search-btn').addEventListener('click', handleSearch);
+
+// Call displayRecentSearches function when the page loads
+window.onload = function() {
+    displayRecentSearches();
+};
