@@ -1,6 +1,6 @@
 // Function to fetch and display weather data
 function displayWeather(latitude, longitude) {
-    const apiKey = '714ce02d37192582c0ce631735181589';
+    const apiKey = '32466c64e9251fccf6dfd8df0d92a6af';
     const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`;
 
     // Fetch weather data from the API
